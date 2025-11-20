@@ -1,5 +1,5 @@
 import random
-from shopping_cart import CalculateTotal, display_total
+from shopping_cart import calculate_total, display_total
 
 
 def test_display_total(capfd):
@@ -9,10 +9,14 @@ def test_display_total(capfd):
 
 
 def test_calculate_total__empty_cart():
-    assert CalculateTotal([]) == 0, 'Incorrect sum on empty cart'
+    assert calculate_total([]) == 0, 'Incorrect sum on empty cart'
 
 
-def test_calculate_total__random_card():
+def test_calculate_total__zero_cart():
+    assert calculate_total([{'name': 'Item0', 'price': 0.0}]) == 0, 'Incorrect sum on empty cart'
+
+
+def test_calculate_total__random_cart():
     random.seed(0)
     length = random.randint(1, 300)
     cart = []
@@ -21,7 +25,7 @@ def test_calculate_total__random_card():
         item_price = random.random() * 100
         total_expected += item_price
         cart.append({'name': f'Item {x}', 'price': item_price})
-    assert abs(CalculateTotal(cart) - total_expected) < 1e-7, f'Incorrect sum on cart {cart}'
+    assert abs(calculate_total(cart) - total_expected) < 1e-7, f'Incorrect sum on cart {cart}'
 
 
 def test_calculate_total__string_cart():
@@ -33,4 +37,4 @@ def test_calculate_total__string_cart():
         item_price = random.random() * 100
         total_expected += item_price
         cart.append({'name': f'Item {x}', 'price': str(item_price)})
-    assert abs(CalculateTotal(cart) - total_expected) < 1e-7,  f'Incorrect sum on string cart {cart}'
+    assert abs(calculate_total(cart) - total_expected) < 1e-7,  f'Incorrect sum on string cart {cart}'
